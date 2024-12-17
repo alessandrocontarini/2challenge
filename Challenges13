@@ -31,4 +31,7 @@
     Printing flag:
     picoCTF{why_bother_doing_unnecessary_computation_27f28e71}
 
-
+3)Solitaire
+  The goal is to obtain the same sequence of cards everytime you run the game. So an idea could be change the srand(time) to srand(const) 
+  By doing this method you use a const seed, so you obtain a pseudo-random sequence of cards (that is our goal)
+  Ho sentito gli assistenti; mi hanno detto che ho fatto giusto (ma il programma mi genera sempre core dumps)
