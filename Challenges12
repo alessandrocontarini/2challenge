@@ -1,0 +1,48 @@
+Writeup:
+
+1)hello_world
+  The flag is saved in the program
+  strings hello_world 
+  
+  =>Contrgatulation! Flage{reverse_hello_world}
+
+2)funmail
+  solution:
+    user: john galt (is given)
+    To finding the password=> strings funmail
+    =>this-password-is-a-secret-to-everyone!
+
+  Execution:
+    Username: john galt
+    Password: this-password-is-a-secret-to-everyone!
+    	Welcome john galt!
+    You have 1 unread email.
+    1) Read Email
+    2) Quit
+    >> 1
+    --------------------------------------
+    From:	Leeroy Jenkins
+    To:	whoisjohngalt
+    Subject: RE: I need a flag
+    
+    Hey John it's Leeroy.
+    You were asking about a fun flag to use in your next challenge
+    and I think I got one. Tell me what you think of:
+    TUCTF{d0n7_h4rdc0d3_p455w0rd5}
+    Get back to me as soon as you can. Thanks!
+
+3)bomb
+  is required to solve only the first 4 phases
+  Solution:
+    ./bomb
+    Welcome to my fiendish little bomb. You have 6 phases with
+    which to blow yourself up. Have a nice day!
+    Border relations with Canada have never been better.
+    Phase 1 defused. How about the next one?
+    1 2 4 8 16 32
+    That's number 2.  Keep going!
+    0 207
+    Halfway there!
+    7 0
+    So you got that one.
+  
