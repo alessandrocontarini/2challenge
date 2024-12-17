@@ -35,3 +35,17 @@
   The goal is to obtain the same sequence of cards everytime you run the game. So an idea could be change the srand(time) to srand(const) 
   By doing this method you use a const seed, so you obtain a pseudo-random sequence of cards (that is our goal)
   Ho sentito gli assistenti; mi hanno detto che ho fatto giusto (ma il programma mi genera sempre core dumps)
+  We're search for a random function. In this case i found a function called "shuffle_deck"
+
+  In this function there is "  srand(v2);  " where "  v2 = time(0LL); " 
+  An idea could be assign a const to v2
+  
+  068 E8 C5 CD FF FF          call    _time
+  068 89 C7                   mov     edi, eax        ; seed
+  068 E8 6E CD FF FF          call    _srand
+  
+  For example mov edi, 0 => BF 00 00 00 00 
+  L'istruzione mov edi, imm32 carica un valore immediato a 32 bit nel registro EDI. Qui:
+  
+  imm32 indica un valore intero a 32 bit.
+  Anche se il valore da caricare è 0, la CPU si aspetta un valore completo di 4 byte, poiché EDI è un registro a 32 bit
