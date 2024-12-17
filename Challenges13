@@ -6,3 +6,29 @@
     1234
     PIN Correct! Here your bank account:
     Flag{P00r_45_DuCk} 
+
+2)be_quick_or_be_dead
+  Remember : chmod +x be-quick-or-be-dead-1
+  f5(pseuocode on IDA)
+  
+  ./be-quick-or-be-dead-1 
+  Be Quick Or Be Dead 1
+  =====================
+  
+  Calculating key...
+  You need a faster machine. Bye bye.
+  
+  Solution:
+    Inspect the binary_file with IDA
+    There is a call to "set_timer" function. I try to deactivate this function by replacing the call with NOP (90)
+    
+    ./be-quick-or-be-dead-1 
+    Be Quick Or Be Dead 1
+    =====================
+    
+    Calculating key...
+    Done calculating key
+    Printing flag:
+    picoCTF{why_bother_doing_unnecessary_computation_27f28e71}
+
+
