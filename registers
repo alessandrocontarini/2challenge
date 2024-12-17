@@ -7,3 +7,32 @@ Architettura 64bit
 RDI → Primo parametro
 RSI → Secondo parametro
 RDX → Terzo parametro
+
+
+nota:
+-mov edi, 0 (registro a 32-bit) 
+  Quando usi mov edi, 0:
+      EDI è un registro a 32-bit.
+      Il valore immediato (imm32) deve avere 4 byte.
+      Formato finale:
+        BF 00 00 00 00
+      BF: Istruzione "mov" per registri a 32 bit.
+      00 00 00 00: Valore 0 a 32 bit (little-endian).
+
+-mov rdi,0
+Quando usi mov rdi, 0:
+    RDI è un registro a 64-bit.
+    Il valore immediato (imm64) deve avere 8 byte.
+    L'architettura x86_64 richiede un prefisso speciale REX per istruzioni che coinvolgono registri a 64 bit.
+    Opcode: 48 BF:
+        48 → Prefisso REX che abilita operazioni a 64 bit.
+        BF → Istruzione "mov" per registri a 64 bit.
+    Formato finale:
+      48 BF 00 00 00 00 00 00 00 00
+    48: Prefisso REX.
+    BF: Opcode per "mov r64, imm64".
+    00 00 00 00 00 00 00 00: Valore 0 a 64 bit (little-endian).
+
+-mov rdi,2
+  48 BF 02 00 00 00 00 00 00 00
+  Questo perchè il valore immediato viene scritto in formato little-endian
