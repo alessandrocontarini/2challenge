@@ -1,1 +1,5 @@
 HELP 2nd challenge
+A volte quando la flag è già salvata nel programma basta fare "strings file_bin"
+
+Nota: Nello pseudocodice di IDA spesso i numeri interi sono seguiti da LL (è un formato intero long)
+0xE = 14
