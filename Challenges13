@@ -1,0 +1,8 @@
+1)BankAcc
+  Solution
+    The program change the right PIN every time you run it. Maybe there is a random function with a dynamic seed. But in this case maybe is easier patch the command jnz into jz (75->74)
+    
+    Please insert the OTP 4 digit pin to authenticate: 
+    1234
+    PIN Correct! Here your bank account:
+    Flag{P00r_45_DuCk} 
