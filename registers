@@ -1,0 +1,9 @@
+Architettura 32bit
+
+-Il registro EAX è utilizzato per restituire il valore di ritorno.
+
+
+Architettura 64bit
+RDI → Primo parametro
+RSI → Secondo parametro
+RDX → Terzo parametro
