@@ -48,4 +48,19 @@
     run
     RDX: 0x6022a0 ("picoCTF{gDb_iS_sUp3r_u53fuL_f3f39814}")
 
+3)dontdebugmeplease
+  Solution:
+    By using IDA you can see that in init function there is the call "call ptrace".
+    Ptrace is a function that permit to a debugger to controll the target process. But only a debugger at a time can run. So if i delete this call in the program target, my debugger can run.
+    
+    Questo perchè io avvio un debugger su un programma che a sua volta ne avvia un altro con la chiamata ptrace.
+    
+    Dunque, rimpiazzo con i NOP (=90) la chiamata a ptrace.
+    Finalmente posso usare il debugger per trovare la flag. SI vede chiaraemnte dove mettere un breakpoint grazie ad IDA
+    => RSI  0x5555554009d0 ◂— push rbx /* 'SPRITZ{d38U99in9_iS_v3ry_4nn0yIn9.}' */
+
+4)debugmenot
+
+
+
 
