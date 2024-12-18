@@ -1,12 +1,14 @@
 Architettura 32bit
 
 -Il registro EAX è utilizzato per restituire il valore di ritorno.
+r12d-> registro 64 bit di cui vengono presi i 32bit inferiori (d)
 
 
 Architettura 64bit
 RDI → Primo parametro
 RSI → Secondo parametro
 RDX → Terzo parametro
+r12-> registro 64 bit
 
 
 nota:
