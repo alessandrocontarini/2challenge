@@ -1,0 +1,8 @@
+1)no_rop
+  Enter the password : 
+  123456789123456789123456789
+  Correct password! 
+  Flag={hello_world_pwn}
+  Errore di segmentazione (core dump creato)
+
+2)pwn0
