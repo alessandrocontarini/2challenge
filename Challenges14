@@ -60,6 +60,17 @@
     => RSI  0x5555554009d0 ◂— push rbx /* 'SPRITZ{d38U99in9_iS_v3ry_4nn0yIn9.}' */
 
 4)debugmenot
+??????????????????????????????
+
+5)getit
+  solution:
+    Dando un'occhiata con ida, la flag viene scritta iterativamente; perciò ho messo un breakpoint con gdb appena dopo la fine della costruzione in modo che fosse ancora nei registri (ed appena prima della fclose)
+    b* 0x00000000004008b
+    run
+    RDX: 0x6010e0 ("SharifCTF{b70c59275fcfa8aebf2d5911223c6589}")
+
+
+
 
 
 
