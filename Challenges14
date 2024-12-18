@@ -1,1 +1,51 @@
 1)Funmail 2.0
+  solution
+    chmod +x funmail2.0
+    ./funmail2.0
+    
+    Username: john galt
+    Password: wdbsixjk
+    *Incorrect password
+    	--Please login--
+    
+    strings funmail2.0
+    more-secure-password
+    
+    Username: john galt
+    Password: more-secure-password
+    	Welcome john galt!  
+    ERROR! Program failed to load emails.
+    Terminating
+    
+    =>le credenziali sono giuste ma c'è errore. Do un'occhiata con IDA
+    Potremmo mettere un breakpoint appena prima della chiamata d'errore e fare un jump alla funzione showEmails
+    Siccome il main non chiama mai showEmails potremmo mettere un breakpoint al main e saltare a showEmails
+    
+    	b main
+    	run
+    	pwndbg> jump showEmails
+    	Continuing at 0x56555a30.
+    	You have 1 unread email.
+    	1) Read Email
+    	2) Quit
+    	>> 1
+    	--------------------------------------
+    	From:	Leeroy Jenkins
+    	To:	whoisjohngalt
+    	Subject: RE: I need a flag
+    
+    	Hey John it's Leeroy.
+    	You were asking about a fun flag to use in your next challenge
+    	and I think I got one. Tell me what you think of:
+    	TUCTF{l0c4l_<_r3m073_3x3cu710n}
+    	Get back to me as soon as you can. Thanks!
+
+2)learn_gdb
+  Solution:
+    There is a "decrypt_flag" iterative function.
+    I put a breakpoint before the end of the function and inspect the contents of the registers
+    b* 0x00000000004008a8
+    run
+    RDX: 0x6022a0 ("picoCTF{gDb_iS_sUp3r_u53fuL_f3f39814}")
+
+
