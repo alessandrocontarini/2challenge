@@ -66,6 +66,7 @@
   
   	=>BTW, flag: ccit{hi_i_am_a_flag}
 
+=>Shellcode è possibile utilizzarle se non ci sono tecniche come W^E che rendono il codice o scrivibile o eseguibile (e non entrambi contemporaneamente!)
 3)vuln
 In questo esercizio non c'è una funzione utile come "target"
 Dobbiamo iniettare una shellcode nella prima parte del buffer.
@@ -93,5 +94,7 @@ Ed ora abbiamo ciò che ci serve
 	HINTS  README.md  description.txt  exploit.py  vuln  vuln.c
 	$  
 
+
+4)pwn2
 
 
