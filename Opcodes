@@ -2,3 +2,7 @@
 74->jz
 90->NOP
 BF 00 00 00 00-> mov edi, 0
+
+
+7E-> JLE (Jump if less ore Equal)
+7F-> JG (Jump if Greater)
